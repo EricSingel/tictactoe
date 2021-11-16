@@ -9,9 +9,6 @@ function init() {
     let field = document.getElementById(i);
 
     field.classList.remove('ring', 'cross');
-    field.onclick = function () {
-      fieldSelection(i);
-    };
   }
 }
 
@@ -23,7 +20,6 @@ function fieldSelection(id) {
     // fields[id] = 'cross';
     selectedField.onclick = '';
     whoIsNext = false;
-    console.log(document.getElementById(id).classList.item(0));
     document.getElementById('playerShown').innerHTML = `
     ${player2} ist dran!
   `;
@@ -32,7 +28,6 @@ function fieldSelection(id) {
     // fields[id] = 'ring';
     selectedField.onclick = '';
     whoIsNext = true;
-    console.log(document.getElementById(id).classList.item(0));
     document.getElementById('playerShown').innerHTML = `
     ${player1} ist dran!
   `;
@@ -46,56 +41,39 @@ function startGame() {
   document.getElementById('playerShown').innerHTML = `
     ${player1} ist dran!
   `;
+
+  // Put onclick on the divs
+  for (let i = 1; i < 10; i++) {
+    let field = document.getElementById(i);
+    field.onclick = function () {
+      fieldSelection(i);
+    };
+  }
 }
 
 function checkForWin() {
   for (let i = 0; i < 3; i++) {
     if (
       //senkrecht
-      document.getElementById(1 + i).classList.item(0) != null &&
-      document.getElementById(4 + i).classList.item(0) != null &&
-      document.getElementById(7 + i).classList.item(0) != null &&
-      document.getElementById(1 + i).classList.item(0) ==
-        document.getElementById(4 + i).classList.item(0) &&
-      document.getElementById(4 + i).classList.item(0) ==
-        document.getElementById(7 + i).classList.item(0)
+      verticalWin(i)
     ) {
       winnerIs(i);
     }
 
     if (
       //waagerecht
-      document.getElementById(1 + i).classList.item(0) != null &&
-      document.getElementById(2 + i).classList.item(0) != null &&
-      document.getElementById(3 + i).classList.item(0) != null &&
-      document.getElementById(1 + i).classList.item(0) ==
-        document.getElementById(2 + i).classList.item(0) &&
-      document.getElementById(2 + i).classList.item(0) ==
-        document.getElementById(3 + i).classList.item(0)
+      horizontalWin(i)
     ) {
       winnerIs(i);
     }
   }
   if (
-    document.getElementById(1).classList.item(0) != null &&
-    document.getElementById(5).classList.item(0) != null &&
-    document.getElementById(9).classList.item(0) != null &&
-    document.getElementById(1).classList.item(0) ==
-      document.getElementById(5).classList.item(0) &&
-    document.getElementById(5).classList.item(0) ==
-      document.getElementById(9).classList.item(0)
+    //diagonal Linksoben nach rechtsunten
+    lefttopToRightbottom()
   ) {
     winnerIs(0);
   }
-  if (
-    document.getElementById(3).classList.item(0) != null &&
-    document.getElementById(5).classList.item(0) != null &&
-    document.getElementById(7).classList.item(0) != null &&
-    document.getElementById(3).classList.item(0) ==
-      document.getElementById(5).classList.item(0) &&
-    document.getElementById(5).classList.item(0) ==
-      document.getElementById(7).classList.item(0)
-  ) {
+  if (righttopToLeftbottom()) {
     winnerIs(3);
   }
 }
@@ -117,4 +95,52 @@ function disableOnclick() {
   for (let i = 1; i < 10; i++) {
     document.getElementById(i).onclick = '';
   }
+}
+
+function lefttopToRightbottom() {
+  return (
+    document.getElementById(1).classList.item(0) != null &&
+    document.getElementById(5).classList.item(0) != null &&
+    document.getElementById(9).classList.item(0) != null &&
+    document.getElementById(1).classList.item(0) ==
+      document.getElementById(5).classList.item(0) &&
+    document.getElementById(5).classList.item(0) ==
+      document.getElementById(9).classList.item(0)
+  );
+}
+
+function righttopToLeftbottom() {
+  return (
+    document.getElementById(3).classList.item(0) != null &&
+    document.getElementById(5).classList.item(0) != null &&
+    document.getElementById(7).classList.item(0) != null &&
+    document.getElementById(3).classList.item(0) ==
+      document.getElementById(5).classList.item(0) &&
+    document.getElementById(5).classList.item(0) ==
+      document.getElementById(7).classList.item(0)
+  );
+}
+
+function horizontalWin(i) {
+  return (
+    document.getElementById(1 + i).classList.item(0) != null &&
+    document.getElementById(2 + i).classList.item(0) != null &&
+    document.getElementById(3 + i).classList.item(0) != null &&
+    document.getElementById(1 + i).classList.item(0) ==
+      document.getElementById(2 + i).classList.item(0) &&
+    document.getElementById(2 + i).classList.item(0) ==
+      document.getElementById(3 + i).classList.item(0)
+  );
+}
+
+function verticalWin(i) {
+  return (
+    document.getElementById(1 + i).classList.item(0) != null &&
+    document.getElementById(4 + i).classList.item(0) != null &&
+    document.getElementById(7 + i).classList.item(0) != null &&
+    document.getElementById(1 + i).classList.item(0) ==
+      document.getElementById(4 + i).classList.item(0) &&
+    document.getElementById(4 + i).classList.item(0) ==
+      document.getElementById(7 + i).classList.item(0)
+  );
 }
